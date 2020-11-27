@@ -1,0 +1,13 @@
+<div class="container">
+
+    <h1>
+        <a class="btn btn-link" routerLink="/workflows" title="Back to list">
+            <fa-icon [icon]="['far', 'arrow-alt-circle-left']" size="2x"></fa-icon>
+        </a>
+        {{model.title}}
+    </h1>
+    <div class="sub-container">
+        <ngx-md [data]="model.summary"></ngx-md>
+        <div class="mt-5" #mermaid></div>
+    </div>
+</div>

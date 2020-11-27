@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-md" [ngClass]="{'bg-white': !isCollapsed}">
+    <div class="container-fluid p-0">
+        <a class="mr-2 btn btn-lg btn-light bg-white" routerLink="/">
+            <img src="./assets/logo.png" height="28pt" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            (click)="isCollapsed = !isCollapsed" style="z-index: 1001;">
+            <fa-icon icon="bars" size="lg" class="text-muted"></fa-icon>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
+            <div class="navbar-nav ml-sm-auto">
+
+            </div>
+        </div>
+    </div>
+</nav>
