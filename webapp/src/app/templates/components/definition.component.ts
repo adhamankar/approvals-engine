@@ -8,34 +8,41 @@ import { TemplatesState } from '../+state/templates.state';
 import { filter, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LoadTemplateAction } from '../+state/templates.actions';
+import { prepareGraph } from '../templates-util';
 
 @Component({
-    selector: 'template-details',
-    templateUrl: './details.component.html'
+    selector: 'template-definition',
+    templateUrl: './definition.component.html'
 })
-export class TemplateDetailsComponent implements OnInit, OnDestroy {
-
-    templateFileLocation = "";
-
-    routerParam: Subscription;
-
+export class TemplateDefinitionComponent implements OnInit, OnDestroy, AfterViewInit {
     loadedTemplate$: Subscription;
     model: any;
-    showSummary = false;
-
+    @ViewChild("mermaid", { static: false }) mermaidDiv;
     constructor(public store$: Store<TemplatesState>, public activatedRoute: ActivatedRoute) {
     }
-    ngOnInit(): void {
-        this.routerParam = this.activatedRoute.params
-            .pipe(filter(p => p.code), map(p => p.code))
-            .subscribe(code => this.store$.dispatch(new LoadTemplateAction(code)));
 
+    ngOnInit(): void {
         this.loadedTemplate$ = this.store$.select(p => p.templates.loadedTemplate)
             .pipe(filter(p => p))
-            .subscribe(model => this.model = model);
+            .subscribe(model => {
+                this.model = model;
+                this.model.definition = prepareGraph(this.model);
+                this.renderGraph(this.model.definition);
+            });
     }
     ngOnDestroy(): void {
-        this.routerParam ? this.routerParam.unsubscribe() : null;
         this.loadedTemplate$ ? this.loadedTemplate$.unsubscribe() : null;
+    }
+
+    ngAfterViewInit(): void {
+        mermaid.initialize({ theme: "neutral", securityLevel: 'loose' });
+        this.model ? this.renderGraph(this.model.definition) : null;
+    }
+
+    renderGraph(definition) {
+        if (definition && definition.length > 0 && this.mermaidDiv) {
+            mermaid.render("graphContainer", definition,
+                (svgCode) => this.mermaidDiv.nativeElement.innerHTML = svgCode);
+        }
     }
 }

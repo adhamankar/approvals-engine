@@ -30,13 +30,6 @@ templates:
     type: 
       - ignitia
 
-  - code: clientregno
-    title: Client registration number
-    summary: |
-      Approval for updating a client's registration number and its expiry date. Once approved the client registration number can be printed on the client invoice.
-    type: 
-      - ignitia
-
   - code: clientinvoice
     title: Client invoice
     summary: |

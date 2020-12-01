@@ -1,56 +1,64 @@
-code: newclient
-title: Create new client
+code: clientinvoice
+title: Client invoice approval
 summary: |
-  Approval for a new client to be created in master data list. Once approved, the client created can be used for media planners to plan their bookings associated with the client.
-
-  When this approval path is enabled, the following down stream impacts will occur:
-
-  - No downstream financial impacts will occur on Media WIP and Accruals calculation
-  - No financial transactions can occur until the new client has been approved for financial transactions.
-type: 
+  When enabled, a client invoice will need to be approved prior to the following occuring:
+  - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
+  - Billing the client, and issuing a commercial invoice to the client
+type:
   - ignitia
-metadata:
-  - code: clientcode
-    title: Client code    
-  - code: clientname
-    title: Client Name    
-payload:
+parameters:
+  - code: client_code
+    title: Client code
+    datatype: string
+  - code: client_name
+    title: Client name
+    datatype: string
+  - code: division_code
+    title: Division code
+    datatype: string
+  - code: division_name
+    title: Division name
+    datatype: string
+  - code: client_invoice_number
+    title: Client invoice number
+    datatype: string
+  - code: client_invoice_amount
+    title: Client invoice amount
+    datatype: currency
 stages:
   - initial: true
     final: false
     code: commercial_director
     title: Commercial Director
-    approverGroups: 
+    approverGroups:
       - commercial_director_approvers
     next:
-      - condition: all
-        stage: admin_of_master_data
+      - stage: admin_of_master_data
+      - stage: finance_director
 
   - initial: false
     final: false
     code: admin_of_master_data
     title: Admin of Master Data
-    approverGroups: 
+    approverGroups:
       - admin_of_master_data_approvers
     next:
-      - condition: all
-        stage: finance_commercial
-      - condition: some
-        stage: finance_director
+      - stage: finance_commercial
+        condition:
+          type: ANY
 
   - initial: false
     final: false
     code: finance_commercial
     title: Finance Commercial
-    approverGroups: 
+    approverGroups:
       - finance_commercial
     next:
-      - condition: all
-        stage: finance_director
+      - stage: finance_director
 
   - initial: false
-    final: true
+    final: false
     code: finance_director
     title: Finance Director
-    approverGroups: 
+    approverGroups:
       - finance_director_approvers

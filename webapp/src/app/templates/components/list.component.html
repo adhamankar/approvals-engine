@@ -14,7 +14,7 @@
                                 <ul class="small list-unstyled" *ngIf="group.list && group.list.length > 0">
                                     <li class="p-1" [ngClass]="{'bg-white': selectedCode === item.code}"
                                         *ngFor="let item of group.list">
-                                        <a class="text-dark" routerLink="/workflows"
+                                        <a class="text-dark" routerLink="."
                                             [queryParams]="{ group: group.code, code: item.code  }"
                                             queryParamsHandling="merge">
                                             {{item.title}}
@@ -54,12 +54,10 @@
                                 <div class="m-2 card select-card custom-shadow text-center"
                                     *ngFor="let item of filteredList" [title]="item.title" style="overflow: hidden;">
                                     <div class="bg-light card-title mb-0 text-left">
-                                        <a routerLink="/workflows" [queryParams]="{code: item.code}"
-                                            queryParamsHandling="merge"
+                                        <a [routerLink]="['..', item.code, 'definition']"
                                             class="btn btn-link float-right mt-2 hover-button">
                                             <fa-icon [icon]="['far', 'sun']"></fa-icon>
                                         </a>
-
                                         <h6 class="p-3 font-weight-normal text-truncate">{{item.title}}</h6>
                                     </div>
                                     <div class="pt-3 pl-3 pr-3 pb-0" style="height: 7rem;">
@@ -86,8 +84,8 @@
         </div>
     </div>
 </div>
-
+<!-- 
 <p-sidebar *ngIf="loadedTemplate" [(visible)]="!hideDetails" [fullScreen]="true" (onHide)="onHideDetails()"
     [style]="{'overflow': 'scroll'}">
     <template-details [model]="loadedTemplate" (close)="onHideDetails()"></template-details>
-</p-sidebar>
+</p-sidebar> -->

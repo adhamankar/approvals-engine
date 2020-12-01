@@ -1,13 +1,15 @@
-<div class="container">
-
-    <h1>
-        <a class="btn btn-link" routerLink="/workflows" title="Back to list">
-            <fa-icon [icon]="['far', 'arrow-alt-circle-left']" size="2x"></fa-icon>
-        </a>
+<div class="container" *ngIf="model">
+    <h1 class="text-truncate" [title]="model.title">
         {{model.title}}
+        <button class="btn btn-link btn-sm" (click)="showSummary = !showSummary">
+            <fa-icon [icon]="showSummary ? 'angle-up' : 'angle-down'" size="2x"></fa-icon>
+        </button>
     </h1>
-    <div class="sub-container">
+    <div *ngIf="showSummary">
         <ngx-md [data]="model.summary"></ngx-md>
-        <div class="mt-5" #mermaid></div>
+    </div>
+
+    <div class="alert bg-white custom-shadow rounded mt-3">
+        <router-outlet></router-outlet>
     </div>
 </div>

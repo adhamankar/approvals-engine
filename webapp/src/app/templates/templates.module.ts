@@ -14,12 +14,19 @@ import { TemplateListComponent } from './components/list.component';
 import { TemplateDetailsComponent } from './components/details.component';
 import { NgxMdModule } from 'ngx-md';
 import { SidebarModule } from 'primeng/sidebar';
+import { TemplateDefinitionComponent } from './components/definition.component';
 
 const routes: Route[] = [
-  { path: '', component: TemplateListComponent }
+  { path: 'templates', component: TemplateListComponent },
+  {
+    path: ':code', component: TemplateDetailsComponent, children: [
+      { path: 'definition', component: TemplateDefinitionComponent },
+    ]
+  },
+  { path: '', pathMatch: 'full', redirectTo: 'templates' }
 ];
 
-const components = [TemplateListComponent, TemplateDetailsComponent];
+const components = [TemplateListComponent, TemplateDetailsComponent, TemplateDefinitionComponent];
 @NgModule({
   declarations: components,
   imports: [

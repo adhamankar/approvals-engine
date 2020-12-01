@@ -1,0 +1,79 @@
+code: newclientfintrans
+title: Approve client for financial transactions
+summary: Approval for the client to be available for financial transactions to be created against it.
+type: [ignitia]
+parameters:
+  - code: client_code
+    title: Client code
+    datatype: string
+  - code: client_name
+    title: Client name
+    datatype: string
+  - code: division_code
+    title: Division code
+    datatype: string
+  - code: division_name
+    title: Division name
+    datatype: string
+  - code: client_invoice_number
+    title: Client invoice number
+    datatype: string
+  - code: client_invoice_amount
+    title: Client invoice amount
+    datatype: currency
+stages:
+  - initial: true
+    final: false
+    code: admin_of_master_data
+    title: Admin of Master Data
+    approverGroups:
+      - admin_of_master_data_approvers
+    next:
+      - stage: finance_commercial
+        condition:
+          # supported
+          # expression-types:
+          #   ANY: no additional properties required (default)
+          #   BINARY: left/operator/right (operator: EQ/GT/GTEQ/LT/LTEQ/EMPTY/IN/NOTIN)
+          #   PARAMETER: parameterName
+          #   CONSTANT: value/list (depending upon operator) - cannot exist alone - has to be part of binary expression
+          #   COMPLEX: connector (AND/OR) list
+
+          type: COMPLEX
+          connector: AND
+          list:
+            - type: BINARY
+              left:
+                type: PARAMETER
+                value: client_code
+              operator: EQ
+              right:
+                type: CONSTANT
+                value: "OMG"
+            - type: BINARY
+              left:
+                type: PARAMETER
+                value: division_code
+              operator: IN
+              right:
+                type: CONSTANT
+                value: ["MUMBAI", "PUNE", "SYDNEY", "MELBOURNE"]
+
+      - stage: finance_director
+        # missing condition indicates condition-type: ANY
+
+  - initial: false
+    final: true
+    code: finance_commercial
+    title: Finance Commercial
+    approverGroups:
+      - finance_commercial
+    next:
+        stage: finance_director
+
+  - initial: false
+    final: true
+    code: finance_director
+    title: Finance Director
+    approverGroups:
+      - finance_director_approvers

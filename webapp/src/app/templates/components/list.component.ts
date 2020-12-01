@@ -3,7 +3,7 @@ import * as _ from 'lodash-es';
 import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
 import { Subscription } from 'rxjs';
-import { LoadTemplatesAction, LoadFileAction, UnloadTemplateAction, LoadTemplateAction } from '../+state/templates.actions';
+import { LoadTemplatesAction, LoadFileAction } from '../+state/templates.actions';
 import { filter, map, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -19,7 +19,6 @@ export class TemplateListComponent implements OnInit, OnDestroy {
     details$: Subscription;
     details: any;
 
-    queryParams$: Subscription;
     selectedType: string;
     selectedCode: string;
 
@@ -34,11 +33,6 @@ export class TemplateListComponent implements OnInit, OnDestroy {
 
     params$: Subscription;
 
-    hideDetails = false;
-
-    loadedTemplate$: Subscription;
-    loadedTemplate: any;
-
     constructor(public store$: Store<TemplatesState>, public router: Router, public activatedRoute: ActivatedRoute,
         public messageService: MessageService, @Inject(IBACKEND_URLS) backendUrls: BackendUrl[]) {
 
@@ -50,14 +44,6 @@ export class TemplateListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store$.dispatch(new LoadTemplatesAction(null));
-
-        this.loadedTemplate$ = this.store$.select(p => p.templates.loadedTemplate)
-            .pipe(tap(p => this.hideDetails = !p))
-            .subscribe(p => this.loadedTemplate = p);
-
-        this.queryParams$ = this.activatedRoute.queryParams
-            .pipe(filter(p => p.code))
-            .subscribe(qp => this.onShowDetails(qp.code));
 
         this.redirectTo$ = this.activatedRoute.data
             .pipe(filter(data => data["redirectTo"] && data["redirectTo"].length > 0), map(data => data["redirectTo"]))
@@ -73,13 +59,9 @@ export class TemplateListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.params$ ? this.params$.unsubscribe() : null;
-        this.queryParams$ ? this.queryParams$.unsubscribe() : null;
         this.redirectTo$ ? this.redirectTo$.unsubscribe() : null;
         this.details$ ? this.details$.unsubscribe() : null;
     }
-
-    onShowDetails = (code) => this.store$.dispatch(new LoadTemplateAction(code));
-    onHideDetails = () => this.store$.dispatch(new UnloadTemplateAction(null));
 
     onTemplateFileLoaded(fileContent) {
         if (fileContent && fileContent.content) {

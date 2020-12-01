@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-md" [ngClass]="{'bg-white': !isCollapsed}">
+<nav class="navbar navbar-expand-md bg-white mb-3 border-bottom">
     <div class="container-fluid p-0">
-        <a class="mr-2 btn btn-lg btn-light bg-white" routerLink="/">
-            <img src="./assets/logo.png" height="28pt" />
+        <a class="btn btn-link mr-3" routerLink="/">
+            <img src="./assets/logo.png" height="20pt" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
@@ -10,8 +10,11 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
-            <div class="navbar-nav ml-sm-auto">
-
+            <div class="navbar-nav mr-auto">
+                <a routerLink="workflows" class="btn btn-link" title="View all templates">
+                    <fa-icon icon="code-branch"></fa-icon>
+                    Workflows
+                </a>
             </div>
         </div>
     </div>
