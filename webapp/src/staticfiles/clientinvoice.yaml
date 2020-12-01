@@ -34,7 +34,9 @@ stages:
       - commercial_director_approvers
     next:
       - stage: admin_of_master_data
+        priority: 1
       - stage: finance_director
+        priority: 2
 
   - initial: false
     final: false

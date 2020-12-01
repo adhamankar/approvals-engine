@@ -1,13 +1,11 @@
-import { Component, Input, Output, EventEmitter, Inject, AfterContentInit, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { BackendUrl, IBACKEND_URLS } from 'src/app/lib/backend-urls';
 import * as mermaid from "mermaid";
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { LoadTemplateAction } from '../+state/templates.actions';
 import { prepareGraph } from '../templates-util';
 
 @Component({

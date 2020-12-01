@@ -15,18 +15,20 @@ import { TemplateDetailsComponent } from './components/details.component';
 import { NgxMdModule } from 'ngx-md';
 import { SidebarModule } from 'primeng/sidebar';
 import { TemplateDefinitionComponent } from './components/definition.component';
+import { TemplateEvaluatorComponent } from './components/evaluate.component';
 
 const routes: Route[] = [
   { path: 'templates', component: TemplateListComponent },
   {
     path: ':code', component: TemplateDetailsComponent, children: [
       { path: 'definition', component: TemplateDefinitionComponent },
+      { path: 'evaluate', component: TemplateEvaluatorComponent }
     ]
   },
   { path: '', pathMatch: 'full', redirectTo: 'templates' }
 ];
 
-const components = [TemplateListComponent, TemplateDetailsComponent, TemplateDefinitionComponent];
+const components = [TemplateListComponent, TemplateDetailsComponent, TemplateDefinitionComponent, TemplateEvaluatorComponent];
 @NgModule({
   declarations: components,
   imports: [

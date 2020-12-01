@@ -30,6 +30,7 @@ stages:
       - admin_of_master_data_approvers
     next:
       - stage: finance_commercial
+        priority: 1
         condition:
           # supported
           # expression-types:
@@ -49,7 +50,7 @@ stages:
               operator: EQ
               right:
                 type: CONSTANT
-                value: "OMG"
+                value: "ABC"
             - type: BINARY
               left:
                 type: PARAMETER
@@ -60,6 +61,7 @@ stages:
                 value: ["MUMBAI", "PUNE", "SYDNEY", "MELBOURNE"]
 
       - stage: finance_director
+        priority: 2
         # missing condition indicates condition-type: ANY
 
   - initial: false
@@ -69,7 +71,7 @@ stages:
     approverGroups:
       - finance_commercial
     next:
-        stage: finance_director
+      - stage: finance_director
 
   - initial: false
     final: true

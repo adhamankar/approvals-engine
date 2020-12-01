@@ -1,15 +1,22 @@
-<div class="container" *ngIf="model">
-    <h1 class="text-truncate" [title]="model.title">
-        {{model.title}}
-        <button class="btn btn-link btn-sm" (click)="showSummary = !showSummary">
-            <fa-icon [icon]="showSummary ? 'angle-up' : 'angle-down'" size="2x"></fa-icon>
-        </button>
-    </h1>
-    <div *ngIf="showSummary">
-        <ngx-md [data]="model.summary"></ngx-md>
+<div class="container-fluid" *ngIf="model">
+    <div class="mb-3">
+        <h1 class="text-truncate" [title]="model.title">
+            {{model.title}}
+            <button class="btn btn-link btn-sm" (click)="showSummary = !showSummary">
+                <fa-icon [icon]="showSummary ? 'angle-up' : 'angle-down'" size="2x"></fa-icon>
+            </button>
+        </h1>
+        <div *ngIf="showSummary">
+            <ngx-md [data]="model.summary"></ngx-md>
+        </div>
+
+        <div>
+            <a routerLink="./definition" class="btn btn-light mr-2">Definition</a>
+            <a routerLink="./evaluate" class="btn btn-light">Evaluate</a>
+        </div>
     </div>
 
-    <div class="alert bg-white custom-shadow rounded mt-3">
+    <div class="alert bg-white custom-shadow rounded">
         <router-outlet></router-outlet>
     </div>
 </div>
