@@ -21,8 +21,12 @@ const routes: Route[] = [
   { path: 'templates', component: TemplateListComponent },
   {
     path: ':code', component: TemplateDetailsComponent, children: [
-      { path: 'definition', component: TemplateDefinitionComponent },
-      { path: 'evaluate', component: TemplateEvaluatorComponent }
+      {
+        path: 'definition', component: TemplateDefinitionComponent, children: [
+          { path: 'evaluate', component: TemplateEvaluatorComponent }
+        ]
+      },
+
     ]
   },
   { path: '', pathMatch: 'full', redirectTo: 'templates' }

@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="model">
+<div class="container" *ngIf="model">
     <div class="mb-3">
         <h1 class="text-truncate" [title]="model.title">
             {{model.title}}
@@ -8,11 +8,6 @@
         </h1>
         <div *ngIf="showSummary">
             <ngx-md [data]="model.summary"></ngx-md>
-        </div>
-
-        <div>
-            <a routerLink="./definition" class="btn btn-light mr-2">Definition</a>
-            <a routerLink="./evaluate" class="btn btn-light">Evaluate</a>
         </div>
     </div>
 

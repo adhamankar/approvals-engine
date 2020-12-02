@@ -1,58 +1,66 @@
 <div *ngIf="model">
-    <div class="card m-5" *ngIf="model.parameters">
-        <div class="d-flex flex-wrap card-body">
-            <div style="width: 195px;" class="mr-2 mb-2" *ngFor="let param of model.parameters">
+    <div class="card" *ngIf="!currentInstance">
+        <div class="d-flex flex-wrap card-body" *ngIf="model.parameters">
+            <div style="width: 225px;" class="mr-3 mb-3" *ngFor="let param of model.parameters">
                 <small class="text-muted text-uppercase">{{param.title}}</small>
-                <input type="text" class="form-control form-control-sm" [(ngModel)]="param.value">
+                <input type="text" class="form-control" [(ngModel)]="param.value">
             </div>
         </div>
         <div class="card-footer text-right">
-            <button class="btn btn-sm btn-primary mr-2" (click)="startEvaluation()">Start evaluation</button>
-            <button class="btn btn-sm btn-secondary" (click)="reset()">Reset</button>
+            <button class="btn btn-primary mr-2" (click)="startEvaluation()">Start evaluation</button>
+            <button class="btn btn-secondary" (click)="reset()">Reset</button>
         </div>
     </div>
 
-    <table class="table table-sm" *ngIf="currentInstance">
-        <thead>
-            <tr>
-                <th>Parameters</th>
-                <th>Current stage</th>
-                <th>Next stage</th>
-                <th>Completed stages</th>
-                <th>Approvers</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
+    <div class="card" *ngIf="currentInstance">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="font-weight-light text-uppercase">Input Parameters</h6>
                     <ul *ngIf="currentInstance.parameters">
                         <li *ngFor="let param of currentInstance.parameters">{{param.code}}: {{param.value}}</li>
                     </ul>
-                </td>
-                <td>{{currentInstance.currentStage.title}}</td>
-                <td>{{currentInstance.nextStage}}</td>
-                <td>
-                    <ul *ngIf="currentInstance.parameters">
-                        <li *ngFor="let param of currentInstance.visited">{{param}}</li>
-                    </ul>
-                </td>
-                <td>
+                </div>
+                <div class="col-md-4 border-left">
+                    <h6 class="font-weight-light text-uppercase">Current stage</h6>
+                    {{currentInstance.currentStage.title}}
+
+                    <h6 class="font-weight-light text-uppercase mt-5">Approvers</h6>
                     <ul *ngIf="currentInstance.currentStage.approverGroups">
                         <li *ngFor="let param of currentInstance.currentStage.approverGroups">{{param}}</li>
                     </ul>
-                </td>
-                <td>
+                </div>
+                <div class="col-md-4 border-left">
+                    <h6 class="font-weight-light text-uppercase">Completed stages</h6>
+                    <ul *ngIf="currentInstance.parameters">
+                        <li *ngFor="let param of currentInstance.visited">{{param}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <div *ngIf="currentInstance.nextStage">
+                        Next stage: <b>{{currentInstance.nextStage}}</b>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
                     <div *ngIf="!this.currentInstance.completed">
-                        <button class="btn btn-sm btn-outline-success mr-1" (click)="approve()">
+                        <button class="btn btn-success mr-1" (click)="approve()">
                             <fa-icon icon="check"></fa-icon> Approve
                         </button>
-                        <button class="btn btn-sm btn-outline-danger">
+                        <button class="btn btn-danger" (click)="reject()">
                             <fa-icon icon="times"></fa-icon> Reject
                         </button>
                     </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <div *ngIf="this.currentInstance.completed">
+                        <button class="btn btn-secondary" (click)="close()">
+                            <fa-icon icon="times"></fa-icon> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

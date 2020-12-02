@@ -57,7 +57,9 @@ export class TemplateEvaluatorComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            if (this.currentInstance.currentStage.final !== true) {
+            if (this.currentInstance.currentStage.final === true) {
+                this.currentInstance.nextStage = null;
+            } else {
                 this.currentInstance.nextStage = this.evaluateNextStage(this.currentInstance.currentStage.next, this.currentInstance.parameters);
             }
         }
@@ -96,4 +98,7 @@ export class TemplateEvaluatorComponent implements OnInit, OnDestroy {
             this.currentInstance.nextStage = this.evaluateNextStage(this.currentInstance.currentStage.next, this.currentInstance.parameters);
         }
     }
+
+    reject = () => this.close();
+    close = () => this.currentInstance = null;
 }

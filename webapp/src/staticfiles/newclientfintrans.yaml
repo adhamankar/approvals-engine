@@ -23,23 +23,25 @@ parameters:
     datatype: currency
 stages:
   - initial: true
-    final: false
     code: admin_of_master_data
     title: Admin of Master Data
     approverGroups:
       - admin_of_master_data_approvers
     next:
-      - stage: finance_commercial
+      - stage: cfo
         priority: 1
         condition:
-          # supported
-          # expression-types:
-          #   ANY: no additional properties required (default)
-          #   BINARY: left/operator/right (operator: EQ/GT/GTEQ/LT/LTEQ/EMPTY/IN/NOTIN)
-          #   PARAMETER: parameterName
-          #   CONSTANT: value/list (depending upon operator) - cannot exist alone - has to be part of binary expression
-          #   COMPLEX: connector (AND/OR) list
-
+          type: BINARY
+          left:
+            type: PARAMETER
+            value: client_code
+          operator: EQ
+          right:
+            type: CONSTANT
+            value: "MSFT"
+      - stage: finance_commercial
+        priority: 2
+        condition:
           type: COMPLEX
           connector: AND
           list:
@@ -59,23 +61,26 @@ stages:
               right:
                 type: CONSTANT
                 value: ["MUMBAI", "PUNE", "SYDNEY", "MELBOURNE"]
-
       - stage: finance_director
-        priority: 2
+        priority: 3
         # missing condition indicates condition-type: ANY
 
-  - initial: false
-    final: true
-    code: finance_commercial
+  - code: finance_commercial
     title: Finance Commercial
     approverGroups:
       - finance_commercial
     next:
       - stage: finance_director
 
-  - initial: false
-    final: true
-    code: finance_director
+  - code: finance_director
     title: Finance Director
     approverGroups:
       - finance_director_approvers
+    next:
+      - stage: cfo
+
+  - final: true
+    code: cfo
+    title: Chief finance officer
+    approverGroups:
+      - cfo_approvers
