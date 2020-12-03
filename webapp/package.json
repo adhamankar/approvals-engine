@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "npm version patch && ng deploy --name='adhamankar' --base-href /webapp/ --repo=https://github.com/adhamankar/approvals-engine.git"
   },
   "private": true,
   "dependencies": {
