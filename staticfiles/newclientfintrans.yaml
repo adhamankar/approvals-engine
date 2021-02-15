@@ -1,7 +1,7 @@
 code: newclientfintrans
 title: Approve client for financial transactions
 summary: Approval for the client to be available for financial transactions to be created against it.
-type: [ignitia]
+type: [finance]
 parameters:
   - code: client_code
     title: Client code

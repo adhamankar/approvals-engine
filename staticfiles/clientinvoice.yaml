@@ -5,7 +5,7 @@ summary: |
   - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
   - Billing the client, and issuing a commercial invoice to the client
 type:
-  - ignitia
+  - finance
 parameters:
   - code: client_code
     title: Client code
