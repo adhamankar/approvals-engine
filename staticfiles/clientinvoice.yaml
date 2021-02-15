@@ -1,0 +1,66 @@
+code: clientinvoice
+title: Client invoice approval
+summary: |
+  When enabled, a client invoice will need to be approved prior to the following occuring:
+  - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
+  - Billing the client, and issuing a commercial invoice to the client
+type:
+  - ignitia
+parameters:
+  - code: client_code
+    title: Client code
+    datatype: string
+  - code: client_name
+    title: Client name
+    datatype: string
+  - code: division_code
+    title: Division code
+    datatype: string
+  - code: division_name
+    title: Division name
+    datatype: string
+  - code: client_invoice_number
+    title: Client invoice number
+    datatype: string
+  - code: client_invoice_amount
+    title: Client invoice amount
+    datatype: currency
+stages:
+  - initial: true
+    final: false
+    code: commercial_director
+    title: Commercial Director
+    approverGroups:
+      - commercial_director_approvers
+    next:
+      - stage: admin_of_master_data
+        priority: 1
+      - stage: finance_director
+        priority: 2
+
+  - initial: false
+    final: false
+    code: admin_of_master_data
+    title: Admin of Master Data
+    approverGroups:
+      - admin_of_master_data_approvers
+    next:
+      - stage: finance_commercial
+        condition:
+          type: ANY
+
+  - initial: false
+    final: false
+    code: finance_commercial
+    title: Finance Commercial
+    approverGroups:
+      - finance_commercial
+    next:
+      - stage: finance_director
+
+  - initial: false
+    final: false
+    code: finance_director
+    title: Finance Director
+    approverGroups:
+      - finance_director_approvers

@@ -1,0 +1,51 @@
+code: newclient
+title: New client creation approval
+summary: |
+  Approval for a new client to be created in master data list. Once approved, the client created can be used for media planners to plan their bookings associated with the client.
+
+  When this approval path is enabled, the following down stream impacts will occur:
+
+  - No downstream financial impacts will occur on Media WIP and Accruals calculation
+  - No financial transactions can occur until the new client has been approved for financial transactions.
+type:
+  - ignitia
+metadata:
+  - code: clientcode
+    title: Client code
+  - code: clientname
+    title: Client Name
+parameters:
+stages:
+  - initial: true
+    final: false
+    code: commercial_director
+    title: Commercial Director
+    approverGroups:
+      - commercial_director_approvers
+    next:
+      - stage: admin_of_master_data
+
+  - initial: false
+    final: false
+    code: admin_of_master_data
+    title: Admin of Master Data
+    approverGroups:
+      - admin_of_master_data_approvers
+    next:
+      - stage: finance_commercial
+
+  - initial: false
+    final: false
+    code: finance_commercial
+    title: Finance Commercial
+    approverGroups:
+      - finance_commercial
+    next:
+      - stage: finance_director
+
+  - initial: false
+    final: true
+    code: finance_director
+    title: Finance Director
+    approverGroups:
+      - finance_director_approvers

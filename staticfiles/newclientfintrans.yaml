@@ -1,0 +1,86 @@
+code: newclientfintrans
+title: Approve client for financial transactions
+summary: Approval for the client to be available for financial transactions to be created against it.
+type: [ignitia]
+parameters:
+  - code: client_code
+    title: Client code
+    datatype: string
+  - code: client_name
+    title: Client name
+    datatype: string
+  - code: division_code
+    title: Division code
+    datatype: string
+  - code: division_name
+    title: Division name
+    datatype: string
+  - code: client_invoice_number
+    title: Client invoice number
+    datatype: string
+  - code: client_invoice_amount
+    title: Client invoice amount
+    datatype: currency
+stages:
+  - initial: true
+    code: admin_of_master_data
+    title: Admin of Master Data
+    approverGroups:
+      - admin_of_master_data_approvers
+    next:
+      - stage: cfo
+        priority: 1
+        condition:
+          type: BINARY
+          left:
+            type: PARAMETER
+            value: client_code
+          operator: EQ
+          right:
+            type: CONSTANT
+            value: "MSFT"
+      - stage: finance_commercial
+        priority: 2
+        condition:
+          type: COMPLEX
+          connector: AND
+          list:
+            - type: BINARY
+              left:
+                type: PARAMETER
+                value: client_code
+              operator: EQ
+              right:
+                type: CONSTANT
+                value: "ABC"
+            - type: BINARY
+              left:
+                type: PARAMETER
+                value: division_code
+              operator: IN
+              right:
+                type: CONSTANT
+                value: ["MUMBAI", "PUNE", "SYDNEY", "MELBOURNE"]
+      - stage: finance_director
+        priority: 3
+        # missing condition indicates condition-type: ANY
+
+  - code: finance_commercial
+    title: Finance Commercial
+    approverGroups:
+      - finance_commercial
+    next:
+      - stage: finance_director
+
+  - code: finance_director
+    title: Finance Director
+    approverGroups:
+      - finance_director_approvers
+    next:
+      - stage: cfo
+
+  - final: true
+    code: cfo
+    title: Chief finance officer
+    approverGroups:
+      - cfo_approvers
