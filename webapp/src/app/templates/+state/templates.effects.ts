@@ -11,7 +11,7 @@ export class TemplatesEffects {
 
     @Effect() loadTemplates = this.actions$.pipe(ofType(templateActions.ActionTypes.LoadTemplates),
         switchMap((action: any) =>
-            this.templateService.loadTemplates()
+            this.templateService.loadTemplates(action.payload)
                 .pipe(
                     map(payload => ({ type: templateActions.ActionTypes.LoadTemplatesSuccess, payload })),
                     catchError(() => of({ type: templateActions.ActionTypes.LoadTemplatesFailed }))

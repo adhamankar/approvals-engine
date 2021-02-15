@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
 import { Subscription } from 'rxjs';
 import { LoadTemplatesAction, LoadFileAction } from '../+state/templates.actions';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { load } from 'js-yaml';
@@ -43,7 +43,12 @@ export class TemplateListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store$.dispatch(new LoadTemplatesAction(null));
+        this.redirectTo$ = this.activatedRoute.queryParams
+            .subscribe(qp => {
+                this.selectedType = qp.group;
+                this.selectedCode = qp.code;
+                this.store$.dispatch(new LoadTemplatesAction(qp));
+            });
 
         this.redirectTo$ = this.activatedRoute.data
             .pipe(filter(data => data["redirectTo"] && data["redirectTo"].length > 0), map(data => data["redirectTo"]))
@@ -79,6 +84,7 @@ export class TemplateListComponent implements OnInit, OnDestroy {
         if (this.details) {
             if (this.selectedCode && this.selectedType && this.details.groups) {
                 const group = _.find(this.details.groups, { code: this.selectedType });
+                console.log(this.details.groups, group);
                 if (group && group.list) {
                     this.selectedGroup = _.find(group.list, { code: this.selectedCode })
                     this.filteredList = _.filter(this.details.templates, (t) => _.includes(t[this.selectedType], this.selectedCode));

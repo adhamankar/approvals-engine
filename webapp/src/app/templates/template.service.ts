@@ -14,10 +14,18 @@ export class TemplateService {
             this.templateFileLocation = `${found.value}`;
         }
     }
-    public loadTemplates() {
+    public loadTemplates(param) {
+        console.log('loadTemplates', param)
         return this.httpClient.get(`${this.templateFileLocation}/index.yaml`, { responseType: "text" })
             .pipe(map(yamlString => {
-                try { return safeLoad(yamlString); } catch (e) { return ''; }
+                try {
+                    const yamlContent = safeLoad(yamlString);
+                    if (param && param.code && param.code.length > 0 &&
+                        yamlContent && yamlContent.templates && yamlContent.templates.length > 0) {
+                        yamlContent.templates = _.filter(yamlContent.templates, (template) => _.includes(template.type, param.code));
+                    }
+                    return yamlContent;
+                } catch (e) { return ''; }
             }))
     }
     public loadTemplate(templateCode) {

@@ -1,19 +1,17 @@
-title: Approval workflows
-summary: List of all approval workflows
-  
+title: Approval workflows  
 groups:
   - code: type
     title: Groups
     list:
-      - code: prisma
-        title: Prisma
-        summary: List of all approval workflows in Prisma
-      - code: pfse
-        title: Prisma for sellers
-        summary: List of all approval workflows in PFSe
-      - code: ignitia
-        title: Ignitia
-        summary: List of all approval workflows in Ignitia
+      - code: procurement
+        title: Procurement
+        summary: List of procurement department approval workflows
+      - code: sellers
+        title: Sellers
+        summary: List of seller's approval workflows
+      - code: finance
+        title: Finance
+        summary: List of all finance department approval workflows
 
 templates:
   - code: newclient
@@ -21,14 +19,14 @@ templates:
     summary: |
       Approval for a new client to be created in master data list. Once approved, the client created can be used for media planners to plan their bookings associated with the client
     type: 
-      - ignitia
+      - finance
 
   - code: newclientfintrans
     title: Approve client for financial transactions
     summary: |
       Approval for the client to be available for financial transactions to be created against it.
     type: 
-      - ignitia
+      - finance
 
   - code: clientinvoice
     title: Client invoice
@@ -37,5 +35,5 @@ templates:
       - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
       - Billing the client, and issuing a commercial invoice to the client
     type: 
-      - ignitia
+      - finance
 

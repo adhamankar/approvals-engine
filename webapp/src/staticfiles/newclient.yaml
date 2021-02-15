@@ -8,7 +8,7 @@ summary: |
   - No downstream financial impacts will occur on Media WIP and Accruals calculation
   - No financial transactions can occur until the new client has been approved for financial transactions.
 type:
-  - ignitia
+  - finance
 metadata:
   - code: clientcode
     title: Client code
