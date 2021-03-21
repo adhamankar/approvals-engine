@@ -20,9 +20,6 @@ complex multistage workflow with conditional branches
 
 Any given workflow template consists of following components:
 
-- **title**  
-    Display name for the workflow 
-
 - **parameters**  
     These are input parameters passed by the calling application that can be used for evaluating the a given stage for navigating to the next stages
 

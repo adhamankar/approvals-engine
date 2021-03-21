@@ -14,25 +14,35 @@ import { TemplateListComponent } from './components/list.component';
 import { TemplateDetailsComponent } from './components/details.component';
 import { NgxMdModule } from 'ngx-md';
 import { SidebarModule } from 'primeng/sidebar';
-import { TemplateDefinitionComponent } from './components/definition.component';
+import { TemplateOverviewComponent } from './components/overview.component';
 import { TemplateEvaluatorComponent } from './components/evaluate.component';
+import { AutosizeModule } from 'ngx-autosize';
+import { InstancesComponent } from './components/instances.component';
+import { TemplateEditorComponent } from './components/editor.component';
+import { TemplatePreviewComponent } from './components/preview.component';
+
 
 const routes: Route[] = [
   { path: 'templates', component: TemplateListComponent },
   {
     path: ':code', component: TemplateDetailsComponent, children: [
       {
-        path: 'definition', component: TemplateDefinitionComponent, children: [
+        path: 'overview', component: TemplateOverviewComponent, children: [
           { path: 'evaluate', component: TemplateEvaluatorComponent }
         ]
       },
-
+      { path: 'instances', component: InstancesComponent },
+      { path: 'editor', component: TemplateEditorComponent }
     ]
   },
   { path: '', pathMatch: 'full', redirectTo: 'templates' }
 ];
 
-const components = [TemplateListComponent, TemplateDetailsComponent, TemplateDefinitionComponent, TemplateEvaluatorComponent];
+const components = [
+  TemplateListComponent, TemplateDetailsComponent, TemplateOverviewComponent, TemplateEvaluatorComponent, TemplatePreviewComponent,
+  InstancesComponent,
+  TemplateEditorComponent
+];
 @NgModule({
   declarations: components,
   imports: [
@@ -45,6 +55,7 @@ const components = [TemplateListComponent, TemplateDetailsComponent, TemplateDef
     SidebarModule,
 
     FontAwesomeModule,
+    AutosizeModule,
 
     StoreModule.forFeature("templates", templatesReducer, { initialState: templatesInitialState }),
     EffectsModule.forFeature([TemplatesEffects]),

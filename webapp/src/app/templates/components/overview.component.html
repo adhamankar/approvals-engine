@@ -1,0 +1,5 @@
+<template-preview [model]="model.parsed"></template-preview>
+<hr>
+
+<button class="btn btn-secondary" *ngIf="!evaluatorVisible" (click)="evaluatorVisible = true">Test workflow</button>
+<template-evaluate *ngIf="evaluatorVisible" [model]="model.parsed"></template-evaluate>

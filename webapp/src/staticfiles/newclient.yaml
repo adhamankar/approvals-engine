@@ -1,14 +1,3 @@
-code: newclient
-title: New client creation approval
-summary: |
-  Approval for a new client to be created in master data list. Once approved, the client created can be used for media planners to plan their bookings associated with the client.
-
-  When this approval path is enabled, the following down stream impacts will occur:
-
-  - No downstream financial impacts will occur on Media WIP and Accruals calculation
-  - No financial transactions can occur until the new client has been approved for financial transactions.
-type:
-  - finance
 metadata:
   - code: clientcode
     title: Client code

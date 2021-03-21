@@ -27,4 +27,13 @@ export class TemplatesEffects {
                 )
         )
     );
+    @Effect() updateDefinition = this.actions$.pipe(ofType(templateActions.ActionTypes.UpdateDefinition),
+        switchMap((action: any) =>
+            this.templateService.updateDefinition(action.payload)
+                .pipe(
+                    map(() => ({ type: templateActions.ActionTypes.UpdateDefinitionSuccess, payload: action.payload })),
+                    catchError(() => of({ type: templateActions.ActionTypes.UpdateDefinitionFailed }))
+                )
+        )
+    );
 }

@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <h6 class="font-weight-light text-uppercase">Input Parameters</h6>
-                    <ul *ngIf="currentInstance.parameters">
+                    <ul class="pl-3" *ngIf="currentInstance.parameters">
                         <li *ngFor="let param of currentInstance.parameters">{{param.code}}: {{param.value}}</li>
                     </ul>
                 </div>
@@ -26,14 +26,20 @@
                     {{currentInstance.currentStage.title}}
 
                     <h6 class="font-weight-light text-uppercase mt-5">Approvers</h6>
-                    <ul *ngIf="currentInstance.currentStage.approverGroups">
+                    <ul class="pl-3" *ngIf="currentInstance.currentStage.approverGroups">
                         <li *ngFor="let param of currentInstance.currentStage.approverGroups">{{param}}</li>
                     </ul>
                 </div>
                 <div class="col-md-4 border-left">
                     <h6 class="font-weight-light text-uppercase">Completed stages</h6>
-                    <ul *ngIf="currentInstance.parameters">
-                        <li *ngFor="let param of currentInstance.visited">{{param}}</li>
+                    <ul class="list-unstyled" *ngIf="currentInstance.parameters">
+                        <li *ngFor="let param of currentInstance.visited">
+                            <fa-icon icon="check" [fixedWidth]="true" class="mr-1 text-success" *ngIf="param.approved">
+                            </fa-icon>
+                            <fa-icon icon="times" [fixedWidth]="true" class="mr-1 text-danger" *ngIf="!param.approved">
+                            </fa-icon>
+                            {{param.title}}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -42,7 +48,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div *ngIf="currentInstance.nextStage">
-                        Next stage: <b>{{currentInstance.nextStage}}</b>
+                        Next stage:
+                        <b *ngIf="!currentInstance.currentStage.final">{{currentInstance.nextStage.title}}</b>
+                        <b *ngIf="currentInstance.currentStage.final">FINAL</b>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">

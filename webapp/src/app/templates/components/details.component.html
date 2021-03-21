@@ -11,7 +11,27 @@
         </div>
     </div>
 
-    <div class="alert bg-white custom-shadow rounded">
+    <div class="alert bg-white custom-shadow rounded pt-4">
+        <ul *ngIf="cloudMode" ngbNav class="nav-tabs mb-4" [activeId]="activatedRoute.url | async">
+            <li ngbNavItem="overview">
+                <a ngbNavLink routerLink="overview">
+                    <fa-icon icon="code-branch" class="mr-1"></fa-icon>
+                    Overview
+                </a>
+            </li>
+            <li ngbNavItem="editor">
+                <a ngbNavLink routerLink="editor">
+                    <fa-icon icon="edit" class="mr-1"></fa-icon>
+                    Editor
+                </a>
+            </li>
+            <li ngbNavItem="instances">
+                <a ngbNavLink routerLink="instances">
+                    <fa-icon icon="list" class="mr-1"></fa-icon>
+                    Instances
+                </a>
+            </li>
+        </ul>
         <router-outlet></router-outlet>
     </div>
 </div>

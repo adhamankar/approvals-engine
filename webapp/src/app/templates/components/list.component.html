@@ -49,12 +49,11 @@
                         </div>
 
                         <div class="clearfix d-flex justify-content-center flex-wrap">
-
                             <ng-container *ngIf="filteredList && filteredList.length > 0">
                                 <div class="m-2 card select-card custom-shadow text-center"
                                     *ngFor="let item of filteredList" [title]="item.title" style="overflow: hidden;">
                                     <div class="bg-light card-title mb-0 text-left">
-                                        <a [routerLink]="['..', item.code, 'definition']"
+                                        <a [routerLink]="['..', item.code, 'overview']"
                                             class="btn btn-link float-right mt-2 hover-button">
                                             <fa-icon [icon]="['far', 'sun']"></fa-icon>
                                         </a>

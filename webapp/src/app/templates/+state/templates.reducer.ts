@@ -1,6 +1,7 @@
 import { Templates } from './templates.state';
 import { ActionTypes } from './templates.actions';
 import { transformTemplate } from '../templates-util';
+import { safeLoad } from 'js-yaml';
 
 export function templatesReducer(state: Templates, action: any): Templates {
     switch (action.type) {
@@ -13,7 +14,21 @@ export function templatesReducer(state: Templates, action: any): Templates {
         }
         case ActionTypes.LoadTemplateSuccess: {
             const loadedTemplate = action.payload;
-            transformTemplate(loadedTemplate)
+            if (loadedTemplate && loadedTemplate.definition) {
+                loadedTemplate.parsed = safeLoad(loadedTemplate.definition)
+                transformTemplate(loadedTemplate.parsed)
+            }
+            return { ...state, loadedTemplate };
+        }
+
+        case ActionTypes.UpdateDefinitionSuccess: {
+            const definition = action.payload.definition;
+            let loadedTemplate = state.loadedTemplate || {};
+            if (loadedTemplate && definition) {
+                let parsed = safeLoad(definition);
+                transformTemplate(parsed)
+                loadedTemplate = { ...loadedTemplate, definition, parsed }
+            }
             return { ...state, loadedTemplate };
         }
 

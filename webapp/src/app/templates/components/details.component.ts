@@ -1,20 +1,19 @@
 import { Component, Input, Output, EventEmitter, Inject, AfterContentInit, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { BackendUrl, IBACKEND_URLS } from 'src/app/lib/backend-urls';
-import * as mermaid from "mermaid";
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
 import { filter, map, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { LoadTemplateAction } from '../+state/templates.actions';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'template-details',
     templateUrl: './details.component.html'
 })
 export class TemplateDetailsComponent implements OnInit, OnDestroy {
-
+    cloudMode = environment.cloudMode;
     templateFileLocation = "";
 
     routerParam: Subscription;
@@ -22,10 +21,14 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
     loadedTemplate$: Subscription;
     model: any;
     showSummary = false;
+    currentRoute: string;
 
-    constructor(public store$: Store<TemplatesState>, public activatedRoute: ActivatedRoute) {
+    constructor(public store$: Store<TemplatesState>, public activatedRoute: ActivatedRoute, public router: Router) {
     }
     ngOnInit(): void {
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe((event: any) => this.currentRoute = event.url);
+
         this.routerParam = this.activatedRoute.params
             .pipe(filter(p => p.code), map(p => p.code))
             .subscribe(code => this.store$.dispatch(new LoadTemplateAction(code)));

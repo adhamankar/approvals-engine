@@ -124,7 +124,7 @@ export function prepareGraph(model) {
                         if (nextStage.priority) {
                             priorityText = nextStage.priority === 100 ? 'low' : `${nextStage.priority}`
                         }
-                        stageDefinitions.push(`${ruleCode}-->|"${nextStage.condition.type} (${priorityText})"| ${nextStage.stage}([${stage.title}])`);
+                        stageDefinitions.push(`${ruleCode}-->|"${nextStage.condition?.type} (${priorityText})"| ${nextStage.stage}([${stage.title}])`);
                     });
                 }
             } else {

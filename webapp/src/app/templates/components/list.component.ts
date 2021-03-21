@@ -84,9 +84,9 @@ export class TemplateListComponent implements OnInit, OnDestroy {
         if (this.details) {
             if (this.selectedCode && this.selectedType && this.details.groups) {
                 const group = _.find(this.details.groups, { code: this.selectedType });
-                console.log(this.details.groups, group);
                 if (group && group.list) {
                     this.selectedGroup = _.find(group.list, { code: this.selectedCode })
+                    console.log(this.details.templates, this.selectedType, this.selectedCode);
                     this.filteredList = _.filter(this.details.templates, (t) => _.includes(t[this.selectedType], this.selectedCode));
                 }
             }

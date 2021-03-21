@@ -1,11 +1,3 @@
-code: clientinvoice
-title: Client invoice approval
-summary: |
-  When enabled, a client invoice will need to be approved prior to the following occuring:
-  - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
-  - Billing the client, and issuing a commercial invoice to the client
-type:
-  - finance
 parameters:
   - code: client_code
     title: Client code

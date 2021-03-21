@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "webapp": {
@@ -17,17 +17,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["js-yaml", "chart.js", "mermaid"],
             "outputPath": "dist/webapp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/staticfiles"
-            ],
+            "assets": ["src/favicon.ico", "src/assets", "src/staticfiles"],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -35,9 +32,7 @@
               "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
               "src/styles.sass"
             ],
-            "scripts": [
-              "node_modules/mermaid/dist/mermaid.min.js"
-            ]
+            "scripts": ["node_modules/mermaid/dist/mermaid.min.js"]
           },
           "configurations": {
             "production": {
@@ -94,13 +89,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.sass"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.sass"],
             "scripts": []
           }
         },
@@ -112,9 +102,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -134,6 +122,7 @@
           "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "webapp"
 }

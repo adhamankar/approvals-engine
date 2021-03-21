@@ -1,37 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
-import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { prepareGraph, evaluateExpression } from '../templates-util';
+import { evaluateExpression } from '../templates-util';
 import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'template-evaluate',
     templateUrl: './evaluate.component.html'
 })
-export class TemplateEvaluatorComponent implements OnInit, OnDestroy {
-    loadedTemplate$: Subscription;
-    model: any;
-
+export class TemplateEvaluatorComponent {
+    @Input() model: any;
     instances = [];
     currentInstance = null;
 
     constructor(public store$: Store<TemplatesState>, public activatedRoute: ActivatedRoute, public messageService: MessageService) {
-    }
-
-    ngOnInit(): void {
-        this.loadedTemplate$ = this.store$.select(p => p.templates.loadedTemplate)
-            .pipe(filter(p => p))
-            .subscribe(model => {
-                this.model = model;
-                this.model.definition = prepareGraph(this.model);
-            });
-    }
-    ngOnDestroy(): void {
-        this.loadedTemplate$ ? this.loadedTemplate$.unsubscribe() : null;
     }
 
     reset() {
@@ -77,18 +62,18 @@ export class TemplateEvaluatorComponent implements OnInit, OnDestroy {
             }
         });
         return (next)
-            ? next.stage
+            ? _.find(this.model.stages, { code: next.stage })
             : this.messageService.add({ summary: "Failed to find next stage", detail: "None of the conditions are satisfied.", severity: "error" });
     }
 
     approve() {
-        this.currentInstance.visited.push(this.currentInstance.currentStage.title);
+        this.currentInstance.visited.push({approved: true, title: this.currentInstance.currentStage.title});
         if (this.currentInstance.currentStage.final === true) {
             this.currentInstance.completed = true;
             this.messageService.add({ summary: "Approval flow complete", detail: "The workflow completed successfully.", severity: "success" });
             return;
         }
-        this.currentInstance.currentStage = _.find(this.model.stages, { code: this.currentInstance.nextStage });
+        this.currentInstance.currentStage = _.find(this.model.stages, { code: this.currentInstance.nextStage.code });
         if (!this.currentInstance.currentStage) {
             this.messageService.add({ summary: "Failed to procced", detail: "Invalid next stage configured.", severity: "error" });
             return;
@@ -99,6 +84,10 @@ export class TemplateEvaluatorComponent implements OnInit, OnDestroy {
         }
     }
 
-    reject = () => this.close();
+    reject() {
+        this.currentInstance.visited.push({approved: false, title: this.currentInstance.currentStage.title});
+        this.currentInstance.completed = true;
+        this.messageService.add({ summary: "Approval flow complete", detail: "The workflow completed with rejection.", severity: "error" });
+    }
     close = () => this.currentInstance = null;
 }

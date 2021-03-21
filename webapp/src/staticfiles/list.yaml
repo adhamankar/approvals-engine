@@ -18,15 +18,13 @@ templates:
     title: Create new client
     summary: |
       Approval for a new client to be created in master data list. Once approved, the client created can be used for media planners to plan their bookings associated with the client
-    type: 
-      - finance
+    type: finance
 
   - code: newclientfintrans
     title: Approve client for financial transactions
     summary: |
       Approval for the client to be available for financial transactions to be created against it.
-    type: 
-      - finance
+    type: finance
 
   - code: clientinvoice
     title: Client invoice
@@ -34,6 +32,5 @@ templates:
       When enabled, a client invoice will need to be approved prior to the following occuring:
       - General ledger effects of a client invoice (AR voucher) to be recognised in the core accounting system
       - Billing the client, and issuing a commercial invoice to the client
-    type: 
-      - finance
+    type: finance
 
