@@ -50,9 +50,11 @@ export class TemplateService {
                 }));
         }
     }
-    public loadTemplate(templateCode) {
+    public loadTemplate(payload) {
+        let templateCode = payload.code;
         if (environment.cloudMode) {
-            return this.httpClient.get(`${this.templateUri}/workflows/${templateCode.toLowerCase()}`, this.httpOptions);
+            const qs = payload.version ? `version=${payload.version}` : '';
+            return this.httpClient.get(`${this.templateUri}/workflows/${templateCode.toLowerCase()}?${qs}`, this.httpOptions);
         } else {
             return combineLatest([
                 this.loadTemplates(null)
@@ -69,5 +71,22 @@ export class TemplateService {
 
     public updateDefinition(payload) {
         return this.httpClient.post(`${this.templateUri}/workflows/${payload.code}`, payload, this.httpOptions);
+    }
+
+    public loadInstances(payload) {
+        let qs = payload.version ? `version=${payload.version}` : '';
+        qs = qs + payload.pageIndex ? `&pageIndex=${payload.pageIndex}` : '';
+        return this.httpClient.get(`${this.templateUri}/workflows/${payload.code.toLowerCase()}/instances?${qs}`, this.httpOptions);
+    }
+
+    public createInstance(payload) {
+        return this.httpClient.post(`${this.templateUri}/workflows/${payload.code}/instances`, payload, this.httpOptions);
+    }
+
+    public approveWorkflowStage(payload) {
+        return this.httpClient.put(`${this.templateUri}/workflows/${payload.code}/instances/${payload.instanceId}/approve`, payload, this.httpOptions);
+    }
+    public rejectWorkflowStage(payload) {
+        return this.httpClient.put(`${this.templateUri}/workflows/${payload.code}/instances/${payload.instanceId}/reject`, payload, this.httpOptions);
     }
 }

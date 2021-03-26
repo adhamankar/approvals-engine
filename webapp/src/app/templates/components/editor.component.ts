@@ -31,7 +31,7 @@ export class TemplateEditorComponent implements OnInit, OnDestroy {
             });
     }
     ngOnDestroy(): void {
-        this.loadedTemplate$ ? this.loadedTemplate$.unsubscribe() : null;
+        this.loadedTemplate$?.unsubscribe();
     }
 
     reset = () => {

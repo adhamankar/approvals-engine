@@ -1,1 +1,98 @@
-<h1>Instances</h1>
+<div class="clearfix">
+    <div class="float-right mb-0 mt-1" *ngIf="instances && instances.total > instances.pageSize">
+        <ngb-pagination [maxSize]="3" [(page)]="pageIndex" [boundaryLinks]="true" [pageSize]="instances.pageSize"
+            size="sm" (pageChange)="loadInstances()" [collectionSize]="instances.total">
+        </ngb-pagination>
+    </div>
+
+    <h3>
+        Instances
+        <button class="btn btn-link" *ngIf="!evaluatorVisible" (click)="evaluatorVisible = true">
+            <fa-icon icon="plus"></fa-icon>
+        </button>
+        <button class="btn btn-link" *ngIf="evaluatorVisible" (click)="evaluatorVisible = false">
+            <fa-icon icon="times"></fa-icon>
+        </button>
+    </h3>
+</div>
+
+<div *ngIf="evaluatorVisible && model">
+    <div class="alert alert-warning" *ngIf="model.currentVersion !== model.version">
+        <fa-icon icon="exclamation-triangle" class="mr-1"></fa-icon>
+        New instance can be initiated only for the latest version (v{{model.currentVersion}}) of the workflow.
+    </div>
+
+    <div class="card" *ngIf="model.currentVersion === model.version">
+        <div class="d-flex flex-wrap card-body" *ngIf="model.parsed.parameters">
+            <div style="width: 150pt;" class="mr-2 mb-2" *ngFor="let param of model.parsed.parameters">
+                <small class="text-muted text-uppercase">{{param.title}}</small>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="param.value">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <button class="btn btn-primary mr-2" (click)="instantiate()">Instantiate workflow</button>
+                <button class="btn btn-secondary" (click)="reset()">Reset</button>
+            </div>
+            <div class="mt-2">Instance will be created using v{{model.currentVersion}}</div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive" *ngIf="instances && instances.records">
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Created on</th>
+                <th>Version</th>
+                <th>Input parameters</th>
+                <th>Current stage</th>
+                <th>History</th>
+                <th>Approvers</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let instance of instances.records"
+                [ngClass]="{'table-danger': instance.isCompleted && !instance.isApproved, 'table-success': instance.isCompleted && instance.isApproved}">
+                <td class="text-nowrap">{{instance.createdOn | date:'dd-MMM-yyyy'}}</td>
+                <td>v{{instance.version}}</td>
+                <td>
+                    <ul class="list-unstyled mb-0" *ngIf="instance.parameters && instance.parameters.length > 0">
+                        <li *ngFor="let param of instance.parameters">{{param.code}}: {{param.value}}</li>
+                    </ul>
+                </td>
+                <td>{{instance.currentStage}}</td>
+                <td>
+                    <ul class="list-unstyled mb-0" *ngIf="instance.history && instance.history.length > 0">
+                        <li *ngFor="let record of instance.history">
+                            <sub class="text-muted"> {{record.createdOn | date:'dd-MMM-yyyy'}}</sub>
+                            <div>{{record.previousStage}}: {{record.isApproved ? 'Approved': 'Rejected'}}</div>
+
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    {{instance.approverGroups}}
+                </td>
+                <td class="text-right">
+                    <div *ngIf="instance.isCompleted" class="mr-1">
+                        <div *ngIf="instance.isApproved" class="text-nowrap">
+                            <fa-icon icon="check" class="mr-1"></fa-icon> Approved
+                        </div>
+                        <div *ngIf="!instance.isApproved" class="text-nowrap">
+                            <fa-icon icon="times" class="mr-1"></fa-icon> Rejected
+                        </div>
+                    </div>
+                    <div class="btn btn-group btn-group-sm p-0" *ngIf="!instance.isCompleted">
+                        <button class="btn btn-outline-success" (click)="onApprove(instance)">
+                            <fa-icon icon="check" class="mr-1"></fa-icon> Approve
+                        </button>
+                        <button class="btn btn-outline-danger" (click)="onReject(instance)">
+                            <fa-icon icon="times" class="mr-1"></fa-icon> Reject
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

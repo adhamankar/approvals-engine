@@ -22,6 +22,7 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
     model: any;
     showSummary = false;
     currentRoute: string;
+    versions: any;
 
     constructor(public store$: Store<TemplatesState>, public activatedRoute: ActivatedRoute, public router: Router) {
     }
@@ -31,14 +32,25 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
         this.routerParam = this.activatedRoute.params
             .pipe(filter(p => p.code), map(p => p.code))
-            .subscribe(code => this.store$.dispatch(new LoadTemplateAction(code)));
+            .subscribe(code => this.store$.dispatch(new LoadTemplateAction({ code })));
 
         this.loadedTemplate$ = this.store$.select(p => p.templates.loadedTemplate)
             .pipe(filter(p => p))
-            .subscribe(model => this.model = model);
+            .subscribe(model => {
+                this.model = model;
+                //this.model.currentVersion = 10;
+                this.versions = [];
+                if (this.model.currentVersion > 0) {
+                    _.map(_.range(this.model.currentVersion, 0), v => this.versions.push(v));
+                }
+            });
     }
     ngOnDestroy(): void {
         this.routerParam ? this.routerParam.unsubscribe() : null;
         this.loadedTemplate$ ? this.loadedTemplate$.unsubscribe() : null;
+    }
+
+    onVersionChange(value) {
+        this.store$.dispatch(new LoadTemplateAction({ code: this.model.code, version: value }));
     }
 }

@@ -1,9 +1,9 @@
 <div *ngIf="model">
     <div class="card" *ngIf="!currentInstance">
         <div class="d-flex flex-wrap card-body" *ngIf="model.parameters">
-            <div style="width: 225px;" class="mr-3 mb-3" *ngFor="let param of model.parameters">
+            <div style="width: 150pt;" class="mr-2 mb-2" *ngFor="let param of model.parameters">
                 <small class="text-muted text-uppercase">{{param.title}}</small>
-                <input type="text" class="form-control" [(ngModel)]="param.value">
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="param.value">
             </div>
         </div>
         <div class="card-footer text-right">

@@ -31,8 +31,44 @@ export class TemplatesEffects {
         switchMap((action: any) =>
             this.templateService.updateDefinition(action.payload)
                 .pipe(
-                    map(() => ({ type: templateActions.ActionTypes.UpdateDefinitionSuccess, payload: action.payload })),
+                    map((payload) => ({ type: templateActions.ActionTypes.UpdateDefinitionSuccess, payload })),
                     catchError(() => of({ type: templateActions.ActionTypes.UpdateDefinitionFailed }))
+                )
+        )
+    );
+    @Effect() loadInstances = this.actions$.pipe(ofType(templateActions.ActionTypes.LoadInstances),
+        switchMap((action: any) =>
+            this.templateService.loadInstances(action.payload)
+                .pipe(
+                    map(payload => ({ type: templateActions.ActionTypes.LoadInstancesSuccess, payload })),
+                    catchError(() => of({ type: templateActions.ActionTypes.LoadInstancesFailed }))
+                )
+        )
+    );
+    @Effect() createInstance = this.actions$.pipe(ofType(templateActions.ActionTypes.CreateInstance),
+        switchMap((action: any) =>
+            this.templateService.createInstance(action.payload)
+                .pipe(
+                    map((payload) => ({ type: templateActions.ActionTypes.CreateInstanceSuccess, payload })),
+                    catchError(() => of({ type: templateActions.ActionTypes.CreateInstanceFailed }))
+                )
+        )
+    );
+    @Effect() approveWorkflowStage = this.actions$.pipe(ofType(templateActions.ActionTypes.ApproveWorkflowStage),
+        switchMap((action: any) =>
+            this.templateService.approveWorkflowStage(action.payload)
+                .pipe(
+                    map((payload) => ({ type: templateActions.ActionTypes.ApproveWorkflowStageSuccess, payload })),
+                    catchError(() => of({ type: templateActions.ActionTypes.ApproveWorkflowStageFailed }))
+                )
+        )
+    );
+    @Effect() rejectWorkflowStage = this.actions$.pipe(ofType(templateActions.ActionTypes.RejectWorkflowStage),
+        switchMap((action: any) =>
+            this.templateService.rejectWorkflowStage(action.payload)
+                .pipe(
+                    map(() => ({ type: templateActions.ActionTypes.RejectWorkflowStageSuccess, payload: action.payload })),
+                    catchError(() => of({ type: templateActions.ActionTypes.RejectWorkflowStageFailed }))
                 )
         )
     );

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import * as _ from 'lodash-es';
-import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { TemplatesState } from '../+state/templates.state';
 import { ActivatedRoute } from '@angular/router';
